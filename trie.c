@@ -47,7 +47,7 @@ void insert(node *root, char *word)
 
 node *load()
 {
-    FILE *dict = fopen("dict1.txt", "r");
+    FILE *dict = fopen("dictionary-small.txt", "r");
 
     if (dict == NULL)
     {
@@ -63,7 +63,7 @@ node *load()
     }
     
 
-    char word[45] = "";
+    char word[24] = "";
     while (fgets(word, 45, dict))
     {
         word[strcspn(word, "\n")] = '\0';
