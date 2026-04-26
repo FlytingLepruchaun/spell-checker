@@ -93,3 +93,30 @@ void unload (node *root)
 
     free(root);
 }
+
+bool search(node *root, char *key)
+{
+    if (root == NULL)
+    {
+        return false;
+    }
+    
+    node *ptr = root;
+    
+    for (int i = 0; key[i] != '\0'; i++) 
+    {
+        int index = key[i] - 'a';
+        if (ptr->children[index] == NULL)
+        {
+            return false;
+        }
+    
+        ptr = ptr->children[index];
+    }
+    
+    if (ptr->isWordEnd)
+    {
+        return true;
+    }
+    return false;
+}
