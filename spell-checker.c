@@ -29,7 +29,7 @@ int main(int argc, char const *argv[])
     
     unsigned int misspelt = 0;
     char word[25] = "";
-    printf("MISSPLET WORDS: \n");
+    printf("MISSPELT WORDS: \n");
     while(fscanf(text, "%24s", word) == 1)
     {
         unsigned int len = strlen(word);
