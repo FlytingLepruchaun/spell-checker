@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
 {
     printf("Enter adress of text file: ");
     char txtfile[256];
-    scanf("%s", txtfile);
+    scanf("%255s", txtfile);
 
     FILE *text = fopen(txtfile, "r");
     if (text == NULL)
@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
     unsigned int misspelt = 0;
     char word[25] = "";
     printf("MISSPLET WORDS: \n");
-    while(fscanf(text, "%s", word) == 1)
+    while(fscanf(text, "%24s", word) == 1)
     {
         unsigned int len = strlen(word);
         while(len > 0 && ispunct((unsigned char)word[len - 1]))
