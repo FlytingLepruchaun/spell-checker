@@ -10,6 +10,9 @@ struct node
     bool isWordEnd;
 };
 
+/* 
+    Function to allocate memory for a node and initialize all members of the node to 0 or equivalent.
+*/
 node *Trie(void)
 {
     node *nn = malloc(sizeof(node));
@@ -28,6 +31,21 @@ node *Trie(void)
     return nn;
 }
 
+/*
+    inserts one word into the trie 
+
+    for every character in the word:
+        - calculate index using (word[i] - 'a')
+        - check if a child node exists at that index
+        - if not, create a new node using Trie() and link it
+        - move the pointer to the child node
+
+    after processing all characters, marks the final node as end of a valid word
+
+    error codes:
+        0 - success
+        1 - Trie() failed / memory allocation error
+*/
 int insert(node *root, char *word)
 {
     node *ptr = root;
@@ -52,6 +70,12 @@ int insert(node *root, char *word)
     return 0;
 }
 
+/*
+    function to load dictionary into trie
+    returns root node address during normal functioning
+
+    else returns NULL if: dict could not be opened, root could not be initialized, inset function fails
+*/
 node *load()
 {
     FILE *dict = fopen("dictionary-small.txt", "r");
@@ -87,6 +111,10 @@ node *load()
     return root;
 }
 
+/*
+    recursively frees all nodes in the trie
+    traverses children first (post-order), then frees the node
+*/
 void unload (node *root)
 {
 
@@ -106,6 +134,13 @@ void unload (node *root)
     free(root);
 }
 
+/*
+    search for a word in the trie
+
+    traverse nodes using each character in key.
+    if any required child is missing, return false.
+    after traversal, return true only if node marks end of word.
+*/
 bool search(node *root, char *key)
 {
     if (root == NULL)
