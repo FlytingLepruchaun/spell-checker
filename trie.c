@@ -28,7 +28,7 @@ node *Trie(void)
     return nn;
 }
 
-void insert(node *root, char *word)
+int insert(node *root, char *word)
 {
     node *ptr = root;
     for (int i = 0; word[i] != '\0'; i++)
@@ -39,7 +39,8 @@ void insert(node *root, char *word)
             if (nn == NULL)
             {
                 printf("insertion failed.\n");
-                return;
+                unload(root);
+                return 1;
             }
             
             ptr->children[word[i] - 'a'] = nn;
@@ -48,6 +49,8 @@ void insert(node *root, char *word)
         ptr = ptr->children[word[i] - 'a'];
     }
     ptr->isWordEnd = true;
+
+    return 0;
 }
 
 node *load()
@@ -62,6 +65,7 @@ node *load()
     node *root = Trie();
     if (root == NULL)
     {
+        printf("could not initialize trie.\n");
         return NULL;
     }
     
@@ -70,7 +74,12 @@ node *load()
     while (fgets(word, 24, dict))
     {
         word[strcspn(word, "\n")] = '\0';
-        insert(root, word);
+        if (insert(root, word))
+        {
+            printf("could not load dictionary.\n");
+            unload(root);
+            return NULL;
+        }
     }
 
     fclose(dict);
