@@ -39,7 +39,6 @@ int insert(node *root, char *word)
             if (nn == NULL)
             {
                 printf("insertion failed.\n");
-                unload(root);
                 return 1;
             }
             
@@ -78,6 +77,7 @@ node *load()
         {
             printf("could not load dictionary.\n");
             unload(root);
+            fclose(dict);
             return NULL;
         }
     }
