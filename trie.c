@@ -65,6 +65,7 @@ node *load()
     if (root == NULL)
     {
         printf("could not initialize trie.\n");
+        fclose(dict);
         return NULL;
     }
     
