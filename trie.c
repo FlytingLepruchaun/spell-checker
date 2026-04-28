@@ -13,7 +13,6 @@ struct node
 node *Trie(void)
 {
     node *nn = malloc(sizeof(node));
-
     if (nn == NULL)
     {
         printf("malloc failed.\n");
@@ -37,6 +36,12 @@ void insert(node *root, char *word)
         if (ptr->children[word[i] - 'a'] == NULL) 
         {
             node *nn = Trie();
+            if (nn == NULL)
+            {
+                printf("insertion failed.\n");
+                return;
+            }
+            
             ptr->children[word[i] - 'a'] = nn;
         }
 
@@ -48,7 +53,6 @@ void insert(node *root, char *word)
 node *load()
 {
     FILE *dict = fopen("dictionary-small.txt", "r");
-
     if (dict == NULL)
     {
         printf("could not open dictionary.\n");
@@ -56,7 +60,6 @@ node *load()
     }
     
     node *root = Trie();
-
     if (root == NULL)
     {
         return NULL;
@@ -64,14 +67,13 @@ node *load()
     
 
     char word[24] = "";
-    while (fgets(word, 45, dict))
+    while (fgets(word, 24, dict))
     {
         word[strcspn(word, "\n")] = '\0';
         insert(root, word);
     }
 
     fclose(dict);
-
     return root;
 }
 
@@ -114,9 +116,5 @@ bool search(node *root, char *key)
         ptr = ptr->children[index];
     }
     
-    if (ptr->isWordEnd)
-    {
-        return true;
-    }
-    return false;
+    return ptr->isWordEnd;
 }
