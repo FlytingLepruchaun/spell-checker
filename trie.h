@@ -1,5 +1,8 @@
 #ifndef TRIE
     #define TRIE
+
+    #include <stdbool.h>
+
     typedef struct node node;
     
     node *load();
