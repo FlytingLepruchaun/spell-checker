@@ -2,15 +2,53 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <getopt.h>
+
 #include "trie.h"
+#include "interactive.h"
 
 void strlwr(char *str);
 
-int main(int argc, char const *argv[])
+void print_usage(char *argv0)
 {
-    printf("Enter adress of text file: ");
-    char txtfile[256];
-    scanf("%255s", txtfile);
+    printf("Usage: %s -t <file> [-i] [-d <dicts>...]\n", argv0);
+    printf("    -t <file>:   Specify the path of text file to spell-check\n");
+    printf("    -i:          Enables interactive mode\n");
+    printf("    -d <dicts>:  Adds all dictionaries in <dicts> list to trie\n");
+    printf("    Running this script without any option shows this help\n");
+}
+
+int main(int argc, char *const argv[])
+{
+    int opt, dictc = 0;
+    char *txtfile = NULL;
+    char *dicts[10] = {NULL};
+
+    do
+    {
+        opt = getopt(argc, argv, "t:id:");
+        switch (opt)
+        {
+        case 'i':
+            return interactiveMain(argc, argv);
+
+        case 't':
+            txtfile = optarg;
+            break;
+        
+        case 'd':
+            while (optind < argc && argv[optind][0]!= '-')
+            {
+                dicts[dictc++] = argv[optind++];
+            }
+            break;
+
+        default:
+            print_usage(argv[0]);
+            return 0;
+        }
+    } while (opt != -1);
+    
 
     FILE *text = fopen(txtfile, "r");
     if (text == NULL)
@@ -19,7 +57,7 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    node *root = load();
+    node *root = load(dictc, dicts);
     if (root == NULL)
     {
         printf("Could not load dictionary.\n");
