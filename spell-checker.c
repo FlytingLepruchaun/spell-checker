@@ -9,15 +9,6 @@
 
 void strlwr(char *str);
 
-void print_usage(char *argv0)
-{
-    printf("Usage: %s -t <file> [-i] [-d <dicts>...]\n", argv0);
-    printf("    -t <file>:   Specify the path of text file to spell-check\n");
-    printf("    -i:          Enables interactive mode\n");
-    printf("    -d <dicts>:  Adds all dictionaries in <dicts> list to trie\n");
-    printf("    Running this script without any option shows this help\n");
-}
-
 int main(int argc, char *const argv[])
 {
     int opt, dictc = 0;
