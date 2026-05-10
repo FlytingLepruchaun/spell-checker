@@ -27,10 +27,7 @@ int main(int argc, char *const argv[])
         break;
         
         case 'd':
-            while (optind < argc && argv[optind][0]!= '-')
-            {
-                dicts[dictc++] = argv[optind++];
-            }
+            dicts[dictc++] = optarg;
         break;
 
         default:
@@ -44,7 +41,6 @@ int main(int argc, char *const argv[])
         print_usage(argv[0]);
         return 0;
     }
-    
 
     FILE *text = fopen(txtfile, "r");
     if (text == NULL)
@@ -53,7 +49,7 @@ int main(int argc, char *const argv[])
         return 1;
     }
 
-    node *root = load(1, (char **){"dicts/dictionary-small.txt", NULL});
+    node *root = load(1, (char *[]){"dicts/dictionary-small.txt"});
     if (root == NULL)
     {
         printf("Could not load dictionary.\n");
@@ -88,7 +84,7 @@ int main(int argc, char *const argv[])
         } 
         strlwr(word);
         
-        if (!search(root, word) || !search(alts_root, word))
+        if (!search(root, word) && (alts_root == NULL || !search(alts_root, word)))
         {
             printf("%s\n", word);
             ++misspelt;
