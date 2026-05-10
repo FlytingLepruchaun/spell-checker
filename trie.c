@@ -78,7 +78,7 @@ int insert(node *root, char *word)
 */
 node *load()
 {
-    FILE *dict = fopen("dictionary-small.txt", "r");
+    FILE *dict = fopen("dicts/dictionary-small.txt", "r");
     if (dict == NULL)
     {
         printf("could not open dictionary.\n");
