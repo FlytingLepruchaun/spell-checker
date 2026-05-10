@@ -4,8 +4,6 @@
 #include "interactive.h"
 #include "trie.h"
 
-void fcopy(FILE *dest, FILE *src);
-
 void print_usage(char *argv0)
 {
     printf("Usage: %s -t <file> [-i] [-d <dicts>...]\n", argv0);
@@ -59,7 +57,7 @@ int interactiveMain(int argc, char *const argv[])
         return 1;
     }
 
-    node *root = load();
+    node *root = load(1, (char **){"dicts/dictionary-small.txt", NULL});
     if (root == NULL)
     {
         printf("Could not load dictionary.\n");
@@ -70,23 +68,20 @@ int interactiveMain(int argc, char *const argv[])
     node *alts_root = NULL;
     if (dictc != 0)
     {
-        alts_root = load();
+        alts_root = load(dictc, dicts);
         if (alts_root == NULL)
         {
             printf("Could not load auxilary dictionaries.\n");
             return 2;
         }
-        
     }
 
     char *dest_file = "out.txt";
     FILE *dest = fopen(dest_file, "w");
-    fcopy(dest, text);
     
     char word[45] = "";
     while (fscanf(text, "%45s", word) == 1)
     {
-        
         if (!search(root, word) || !search(alts_root, word))
         {
             
@@ -94,13 +89,4 @@ int interactiveMain(int argc, char *const argv[])
     }
     
     return 0;
-}
-
-void fcopy(FILE *dest, FILE *src)
-{
-    char ch;
-    while ((ch = fgetc(src)) != EOF)
-    {
-        fputc(ch, dest);
-    }
 }

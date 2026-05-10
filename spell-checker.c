@@ -53,12 +53,23 @@ int main(int argc, char *const argv[])
         return 1;
     }
 
-    node *root = load();
+    node *root = load(1, (char **){"dicts/dictionary-small.txt", NULL});
     if (root == NULL)
     {
         printf("Could not load dictionary.\n");
         fclose(text);
         return 2;
+    }
+
+    node *alts_root = NULL;
+    if (dictc != 0)
+    {
+        alts_root = load(dictc, dicts);
+        if (alts_root == NULL)
+        {
+            printf("Could not load auxilary dictionaries.\n");
+            return 2;
+        }
     }
     
     unsigned int misspelt = 0;
@@ -77,7 +88,7 @@ int main(int argc, char *const argv[])
         } 
         strlwr(word);
         
-        if (!search(root, word))
+        if (!search(root, word) || !search(alts_root, word))
         {
             printf("%s\n", word);
             ++misspelt;

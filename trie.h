@@ -5,7 +5,7 @@
 
     typedef struct node node;
     
-    node *load();
+    node *load(int dictc, char **dicts);
     void unload (node *root);
     bool search(node *root, char *key);
 

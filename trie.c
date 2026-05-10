@@ -76,38 +76,39 @@ int insert(node *root, char *word)
 
     else returns NULL if: dict could not be opened, root could not be initialized, inset function fails
 */
-node *load()
+node *load(int dictc, char **dicts)
 {
-    FILE *dict = fopen("dicts/dictionary-small.txt", "r");
-    if (dict == NULL)
-    {
-        printf("could not open dictionary.\n");
-        return NULL;
-    }
-    
     node *root = Trie();
     if (root == NULL)
     {
         printf("could not initialize trie.\n");
-        fclose(dict);
         return NULL;
     }
-    
 
-    char word[24] = "";
-    while (fgets(word, 24, dict))
-    {
-        word[strcspn(word, "\n")] = '\0';
-        if (insert(root, word))
+    for (int i = 0; i < dictc; i++)
+    {    
+        FILE *dict = fopen(dicts[i], "r");
+        if (dict == NULL)
         {
-            printf("could not load dictionary.\n");
-            unload(root);
-            fclose(dict);
+            printf("could not open dictionary: %s\n", dicts[i]);
             return NULL;
         }
-    }
 
-    fclose(dict);
+        char word[46] = "";
+        while (fgets(word, 46, dict))
+        {
+            word[strcspn(word, "\n")] = '\0';
+            if (insert(root, word))
+            {
+                printf("could not load dictionary.\n");
+                unload(root);
+                fclose(dict);
+                return NULL;
+            }
+        }
+
+        fclose(dict);
+    }
     return root;
 }
 
