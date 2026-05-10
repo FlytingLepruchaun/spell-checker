@@ -15,9 +15,8 @@ int main(int argc, char *const argv[])
     char *txtfile = NULL;
     char *dicts[10] = {NULL};
 
-    do
+    while ((opt = getopt(argc, argv, "t:id:")) != -1)
     {
-        opt = getopt(argc, argv, "t:id:");
         switch (opt)
         {
         case 'i':
@@ -25,20 +24,26 @@ int main(int argc, char *const argv[])
 
         case 't':
             txtfile = optarg;
-            break;
+        break;
         
         case 'd':
             while (optind < argc && argv[optind][0]!= '-')
             {
                 dicts[dictc++] = argv[optind++];
             }
-            break;
+        break;
 
         default:
             print_usage(argv[0]);
             return 0;
         }
-    } while (opt != -1);
+    }    
+
+    if (txtfile == NULL)
+    {
+        print_usage(argv[0]);
+        return 0;
+    }
     
 
     FILE *text = fopen(txtfile, "r");
@@ -48,7 +53,7 @@ int main(int argc, char *const argv[])
         return 1;
     }
 
-    node *root = load(dictc, dicts);
+    node *root = load();
     if (root == NULL)
     {
         printf("Could not load dictionary.\n");
