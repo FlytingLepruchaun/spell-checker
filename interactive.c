@@ -31,10 +31,7 @@ int interactiveMain(int argc, char *const argv[])
         break;
         
         case 'd':
-            while (optind < argc && argv[optind][0]!= '-')
-            {
-                dicts[dictc++] = argv[optind++];
-            }
+            dicts[dictc++] = argv[optind++];
         break;
 
         case 'i':
