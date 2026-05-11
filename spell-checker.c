@@ -94,6 +94,7 @@ int main(int argc, char *const argv[])
     printf("\nTOTAL MISSPELT WORDS: %u\n", misspelt);
     
     unload(root);
+    unload(alts_root);
     fclose(text);
     return 0;
 }
