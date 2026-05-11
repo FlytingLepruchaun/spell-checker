@@ -1,4 +1,9 @@
+.vscode
+
+speller
 check
 *.out
 
 *-t.txt
+
+helper.c
